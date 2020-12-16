@@ -25,7 +25,7 @@ class UserController extends ApiController
     }
 
     /**
-     * Display authenticated user profile
+     * Display authenticated user profile.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -36,7 +36,7 @@ class UserController extends ApiController
     }
 
     /**
-     * Login the user
+     * Login the user.
      *
      * @param  UserLoginRequest  $request
      * @return \Illuminate\Http\Response
@@ -45,7 +45,7 @@ class UserController extends ApiController
     {
         $user = User::where('email', $request->email)->first();
 
-        if(!$user || \Hash::check($request->password, $user->password)) {
+        if (! $user || \Hash::check($request->password, $user->password)) {
             return response([
                 'message' => 'Invalid credentials.',
             ], 400);
@@ -57,7 +57,7 @@ class UserController extends ApiController
     }
 
     /**
-     * Logout the user
+     * Logout the user.
      *
      * @param  UserLoginRequest  $request
      * @return \Illuminate\Http\Response
@@ -67,7 +67,7 @@ class UserController extends ApiController
         $request->user()->tokens()->delete();
 
         return response([
-            'message' => 'Logged out!'
+            'message' => 'Logged out!',
         ]);
     }
 }

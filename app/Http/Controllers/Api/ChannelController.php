@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\DTOs\ChannelResource;
 use App\Http\DTOs\SimpleCollection;
-use App\Http\DTOs\UserResource;
 use App\Http\Requests\ChannelRequest;
-use App\Http\Requests\Auth\UserRequest;
 use App\Models\Channel;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class ChannelController extends ApiController

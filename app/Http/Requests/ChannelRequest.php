@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\BaseFormRequest;
-
 class ChannelRequest extends BaseFormRequest
 {
     /**
@@ -17,21 +15,21 @@ class ChannelRequest extends BaseFormRequest
             'name' => 'required|max:255',
             'is_public' => 'boolean|nullable',
             'is_active' => 'boolean|nullable',
-            'extra_data' => 'array|nullable'
+            'extra_data' => 'array|nullable',
         ];
     }
 
     /**
      * Set the default value for request field if this is null
-     * This function will execute before validation so make sure your default value is match with the rule validation
+     * This function will execute before validation so make sure your default value is match with the rule validation.
      *
      * @return array
      */
     public function defaults(): array
     {
-        if($this->getMethod() != 'POST') {
+        if ($this->getMethod() != 'POST') {
             return [];
-        };
+        }
 
         return [
             'is_public' => false,

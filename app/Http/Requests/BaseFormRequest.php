@@ -6,12 +6,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseFormRequest extends FormRequest
 {
-
     private function setDefaults()
     {
         $defaults = [];
-        foreach($this->defaults() as $key => $default) {
-            if(is_null($this->$key)) {
+        foreach ($this->defaults() as $key => $default) {
+            if (is_null($this->$key)) {
                 $defaults[$key] = $default;
             }
         }
@@ -23,7 +22,7 @@ abstract class BaseFormRequest extends FormRequest
     {
         return [];
     }
-    
+
     /**
      * Validate the class instance.
      *
