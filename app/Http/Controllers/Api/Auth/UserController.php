@@ -64,7 +64,7 @@ class UserController extends ApiController
      */
     public function logout(Request $request)
     {
-        $request->user()?->tokens()?->delete();
+        $request->user()->tokens()->delete();
 
         return response([
             'message' => 'Logged out!'
