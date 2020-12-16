@@ -19,7 +19,11 @@ class UserController extends ApiController
      */
     public function store(UserRequest $request)
     {
-        $user = User::create($request->validated());
+        $validatedData = $request->validated();
+
+        $validatedData['password'] = bcrypt($validatedData['password']);
+        
+        $user = User::create($validatedData);
 
         return response(new UserResource($user));
     }
@@ -45,7 +49,7 @@ class UserController extends ApiController
     {
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || \Hash::check($request->password, $user->password)) {
+        if (! $user || ! \Hash::check($request->password, $user->password)) {
             return response([
                 'message' => 'Invalid credentials.',
             ], 400);

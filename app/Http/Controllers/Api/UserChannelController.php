@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\UserJoinedChannel;
 use App\Exceptions\InvalidLogicException;
 use App\Http\DTOs\ChannelResource;
 use App\Http\DTOs\SimpleCollection;
@@ -26,13 +27,15 @@ class UserChannelController extends ApiController
     public function store(UserChannelRequest $request, User $user)
     {
         // check if the user already exists in the channel
-        if($user->channels()->where('channels.id', $request->channel_id)->exists()) {
-            throw new InvalidLogicException('The user already exists in this channel!', 400);
+        if($user->isMemberOfChannel($request->channel_id)) {
+            throw new InvalidLogicException('The user already exists in this channel!');
         }
 
         $user->channels()->syncWithoutDetaching([
             $request->channel_id => \Arr::except($request->validated(), 'channel_id')
         ]);
+
+        broadcast(new UserJoinedChannel($user, Channel::find($request->channel_id)));
 
         return response()->noContent();
     }

@@ -31,6 +31,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function isMemberOfChannel($channelId) {
+        return $this->channels()->where('channels.id', $channelId)->exists();
+    }
+
     public function channels()
     {
         return $this->belongsToMany(\App\Models\Channel::class, \App\Models\UserChannel::class)->withTimestamps();
