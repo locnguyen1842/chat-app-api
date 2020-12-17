@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\ChannelCreated;
+use App\Events\ChannelRemoved;
+use App\Events\ChannelUpdated;
 use App\Http\DTOs\ChannelResource;
 use App\Http\DTOs\SimpleCollection;
 use App\Http\Requests\ChannelRequest;
@@ -23,12 +26,16 @@ class ChannelController extends ApiController
     {
         $channel = Channel::create($request->validated());
 
+        broadcast(new ChannelCreated($channel));
+
         return response(new ChannelResource($channel));
     }
 
     public function update(ChannelRequest $request, Channel $channel)
     {
         $channel->update($request->validated());
+
+        broadcast(new ChannelUpdated($channel));
 
         return response()->noContent();
     }
@@ -41,6 +48,8 @@ class ChannelController extends ApiController
     public function destroy(Channel $channel)
     {
         $channel->delete();
+
+        broadcast(new ChannelRemoved($channel));
 
         return response()->noContent();
     }
