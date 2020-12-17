@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\ChannelCreated;
 use App\Http\DTOs\ChannelResource;
 use App\Http\DTOs\SimpleCollection;
 use App\Http\Requests\ChannelRequest;

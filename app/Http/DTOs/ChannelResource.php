@@ -12,6 +12,8 @@ class ChannelResource extends BaseJsonResource
             'is_public' => $this->is_public,
             'is_active' => $this->is_active,
             'extra_data' => $this->extra_data,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
