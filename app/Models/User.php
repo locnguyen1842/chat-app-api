@@ -31,7 +31,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function isMemberOfChannel($channelId) {
+    public function isMemberOfChannel($channelId)
+    {
         return $this->channels()->where('channels.id', $channelId)->exists();
     }
 

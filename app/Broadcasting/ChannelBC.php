@@ -7,7 +7,6 @@ use App\Models\User;
 
 class ChannelBC
 {
-
     /**
      * Create a new channel instance.
      *
@@ -15,7 +14,6 @@ class ChannelBC
      */
     public function __construct()
     {
-
     }
 
     /**

@@ -2,12 +2,8 @@
 
 namespace App\Events;
 
-use App\Broadcasting\ChannelBC;
-use App\Broadcasting\UserChannelBC;
 use App\Http\DTOs\ChannelResource;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -59,7 +55,7 @@ class UserJoinedChannel implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'channel' => new ChannelResource($this->channel)
+            'channel' => new ChannelResource($this->channel),
         ];
     }
 }

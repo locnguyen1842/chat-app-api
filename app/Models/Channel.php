@@ -25,6 +25,8 @@ class Channel extends BaseModel
         'is_public' => 'boolean',
         'is_active' => 'boolean',
         'extra_data' => 'array',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
     ];
 
     public function scopeActive($query)
@@ -45,5 +47,15 @@ class Channel extends BaseModel
     public function scopePrivate($query)
     {
         return $query->where('is_public', false);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(\App\Models\Message::class);
+    }
+
+    public function members()
+    {
+        return $this->belongsToMany(\App\Models\User::class, \App\Models\UserChannel::class)->withTimestamps();
     }
 }

@@ -22,7 +22,7 @@ class UserController extends ApiController
         $validatedData = $request->validated();
 
         $validatedData['password'] = bcrypt($validatedData['password']);
-        
+
         $user = User::create($validatedData);
 
         return response(new UserResource($user));
