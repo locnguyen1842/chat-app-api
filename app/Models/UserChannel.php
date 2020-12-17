@@ -15,9 +15,9 @@ class UserChannel extends BaseModel
         'user_id',
         'note',
     ];
-    
+
     public function users()
     {
-        return $this->belongsToMany(\App\Models\Channel::class, \App\Models\UserChannel::class);
+        return $this->belongsToMany(\App\Models\Channel::class, self::class);
     }
 }

@@ -18,15 +18,20 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/login', 'Auth\UserController@login');
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
-
-        Route::apiResource('channels', 'ChannelController');
-        Route::apiResource('users.channels', 'UserChannelController')->scoped([
-            'user' => 'id',
-            'channel' => 'id',
-        ]);
-
         Route::get('/logout', 'Auth\UserController@logout');
 
         Route::get('/profile', 'Auth\UserController@profile');
+
+        Route::apiResource('channels', 'ChannelController');
+
+        Route::apiResource('users.channels', 'UserChannelController')->scoped([
+            'user' => 'id',
+            'channel' => 'id',
+        ])->except(['show']);
+
+        Route::apiResource('channels.messages', 'ChannelMessageController')->scoped([
+            'channel' => 'id',
+            'message' => 'id',
+        ])->except(['update']);
     });
 });

@@ -11,6 +11,7 @@ class ChannelResource extends BaseJsonResource
             'name' => $this->name,
             'is_public' => $this->is_public,
             'is_active' => $this->is_active,
+            'members' => UserResource::collection($this->members),
             'extra_data' => $this->extra_data,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\ChannelCreated;
 use App\Http\DTOs\ChannelResource;
 use App\Http\DTOs\SimpleCollection;
 use App\Http\Requests\ChannelRequest;
@@ -13,7 +12,7 @@ class ChannelController extends ApiController
 {
     public function index(Request $request)
     {
-        $channels = Channel::active()->paginate($request->size);
+        $channels = Channel::active()->with(['members'])->paginate($request->size);
 
         return response(
             new SimpleCollection($channels, ChannelResource::class)

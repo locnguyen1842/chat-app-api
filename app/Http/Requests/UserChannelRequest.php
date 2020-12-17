@@ -11,7 +11,7 @@ class UserChannelRequest extends BaseFormRequest
      */
     public function rules()
     {
-        if($this->getMethod() == 'POST') {
+        if ($this->getMethod() == 'POST') {
             return [
                 'channel_id' => 'required|exists:App\Models\Channel,id',
                 'note' => 'nullable|max:255',
