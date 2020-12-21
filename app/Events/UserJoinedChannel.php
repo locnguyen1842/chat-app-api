@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Http\DTOs\ChannelResource;
+use App\Http\DTOs\UserResource;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -44,6 +45,7 @@ class UserJoinedChannel implements ShouldBroadcast
     {
         return [
             new PresenceChannel("channels-{$this->channel->id}"),
+            new PrivateChannel("users-{$this->user->id}"),
         ];
     }
 
@@ -56,6 +58,7 @@ class UserJoinedChannel implements ShouldBroadcast
     {
         return [
             'channel' => new ChannelResource($this->channel),
+            'user' => new UserResource($this->user),
         ];
     }
 }

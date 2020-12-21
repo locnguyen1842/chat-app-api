@@ -2,6 +2,7 @@
 
 namespace App\Broadcasting;
 
+use App\Http\DTOs\ChannelResource;
 use App\Models\Channel;
 use App\Models\User;
 
@@ -24,6 +25,8 @@ class ChannelBC
      */
     public function join(User $user, Channel $channel)
     {
-        return $user->isMemberOfChannel($channel->id);
+        if($user->isMemberOfChannel($channel->id)) {
+            return new ChannelResource($channel);
+        }
     }
 }
