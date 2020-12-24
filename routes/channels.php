@@ -16,6 +16,6 @@ use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('users-{user}', App\Broadcasting\UserBC::class);
 Broadcast::channel('channels-{channel}', App\Broadcasting\ChannelBC::class);
-Broadcast::channel('channels', function(User $user) {
+Broadcast::channel('channels', function (User $user) {
     return true;
 });

@@ -15,6 +15,7 @@ class ChannelResource extends BaseJsonResource
             'extra_data' => $this->extra_data,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'last_message' => new MessageResource($this->lastMessage),
         ];
     }
 }

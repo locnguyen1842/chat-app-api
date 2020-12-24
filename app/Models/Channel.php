@@ -58,4 +58,9 @@ class Channel extends BaseModel
     {
         return $this->belongsToMany(\App\Models\User::class, \App\Models\UserChannel::class)->withTimestamps();
     }
+
+    public function lastMessage()
+    {
+        return $this->hasOne(\App\Models\Message::class)->orderBy('created_at', 'desc');
+    }
 }

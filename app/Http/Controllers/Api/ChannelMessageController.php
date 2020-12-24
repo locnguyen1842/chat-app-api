@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\MessageType;
+use App\Events\ChannelMessageRemoved;
+use App\Events\ChannelMessageSent;
 use App\Http\DTOs\MessageResource;
 use App\Http\DTOs\SimpleCollection;
 use App\Http\Requests\ChannelMessageRequest;
@@ -40,6 +42,8 @@ class ChannelMessageController extends ApiController
                 $message->saveFiles($validatedData['files']);
             }
 
+            broadcast(new ChannelMessageSent($channel, $message));
+
             return $message;
         });
 
@@ -55,6 +59,8 @@ class ChannelMessageController extends ApiController
     {
         $message->is_removed = true;
         $message->save();
+
+        broadcast(new ChannelMessageRemoved($channel, $message));
 
         return response()->noContent();
     }

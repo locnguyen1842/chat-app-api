@@ -2,9 +2,10 @@
 
 namespace App\Broadcasting;
 
+use App\Broadcasting\Abs\PrivateBC;
 use App\Models\User;
 
-class UserBC
+class UserBC extends PrivateBC
 {
     /**
      * Create a new channel instance.

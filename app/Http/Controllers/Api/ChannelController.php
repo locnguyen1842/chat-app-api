@@ -15,7 +15,7 @@ class ChannelController extends ApiController
 {
     public function index(Request $request)
     {
-        $channels = Channel::active()->with(['members'])->paginate($request->size);
+        $channels = Channel::active()->with(['members', 'lastMessage', 'lastMessage.user'])->paginate($request->size);
 
         return response(
             new SimpleCollection($channels, ChannelResource::class)

@@ -16,6 +16,8 @@ class ChannelRequest extends BaseFormRequest
             'is_public' => 'boolean|nullable',
             'is_active' => 'boolean|nullable',
             'extra_data' => 'array|nullable',
+            'member_ids' => 'array|nullable',
+            'member_ids.*' => 'required|exists:\App\Models\User,id',
         ];
     }
 
