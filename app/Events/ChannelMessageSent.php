@@ -3,22 +3,16 @@
 namespace App\Events;
 
 use App\Http\DTOs\ChannelResource;
-use App\Http\DTOs\UserResource;
+use App\Http\DTOs\MessageResource;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserJoinedChannel implements ShouldBroadcast
+class ChannelMessageSent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    /**
-     * @var \App\Models\User
-     */
-    public $user;
 
     /**
      * @var \App\Models\Channel
@@ -26,14 +20,19 @@ class UserJoinedChannel implements ShouldBroadcast
     public $channel;
 
     /**
+     * @var \App\Models\Message
+     */
+    public $message;
+
+    /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($user, $channel)
+    public function __construct($channel, $message)
     {
-        $this->user = $user;
         $this->channel = $channel;
+        $this->message = $message;
     }
 
     /**
@@ -45,20 +44,19 @@ class UserJoinedChannel implements ShouldBroadcast
     {
         return [
             new PresenceChannel("channels-{$this->channel->id}"),
-            new PrivateChannel("users-{$this->user->id}"),
         ];
     }
 
     public function broadcastAs()
     {
-        return 'user-joined-channel';
+        return 'channel-message-sent';
     }
 
     public function broadcastWith()
     {
         return [
             'channel' => new ChannelResource($this->channel),
-            'user' => new UserResource($this->user),
+            'message' => new MessageResource($this->message),
         ];
     }
 }

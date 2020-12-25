@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\ChannelUpdated;
 use App\Events\UserJoinedChannel;
+use App\Events\UserLeftChannel;
 use App\Exceptions\InvalidLogicException;
 use App\Http\DTOs\ChannelResource;
 use App\Http\DTOs\SimpleCollection;
@@ -15,7 +17,7 @@ class UserChannelController extends ApiController
 {
     public function index(Request $request, User $user)
     {
-        $channels = $user->channels()->paginate($request->size);
+        $channels = $user->channels()->with(['members', 'lastMessage', 'lastMessage.user'])->paginate($request->size);
 
         return response(
             new SimpleCollection($channels, ChannelResource::class)
@@ -42,12 +44,16 @@ class UserChannelController extends ApiController
     {
         $user->channels()->updateExistingPivot($channel, $request->validated());
 
+        broadcast(new ChannelUpdated($channel));
+
         return response()->noContent();
     }
 
     public function destroy(User $user, Channel $channel)
     {
         $user->channels()->detach($channel);
+
+        broadcast(new UserLeftChannel($user, $channel));
 
         return response()->noContent();
     }
