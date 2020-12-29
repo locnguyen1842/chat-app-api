@@ -2,26 +2,18 @@
 
 namespace App\Broadcasting;
 
-use App\Broadcasting\Abs\PresenceBC;
+use App\Broadcasting\Abs\BaseBC;
 use App\Http\DTOs\ChannelResource;
+use App\Http\DTOs\UserResource;
 use App\Models\Channel;
 use App\Models\User;
 
-class ChannelBC extends PresenceBC
+class ChannelBC extends BaseBC
 {
-    /**
-     * Create a new channel instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-    }
-
     public function join(User $user, Channel $channel)
     {
         if ($user->isMemberOfChannel($channel->id)) {
-            return new ChannelResource($channel);
+            return new UserResource($user);
         }
     }
 }

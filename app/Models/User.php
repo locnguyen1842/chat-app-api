@@ -31,6 +31,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function isReceivedMessage($messageId)
+    {
+        return $this->receivedMessages()->where('messages.id', $messageId)->exists();
+    }
+
     public function isMemberOfChannel($channelId)
     {
         return $this->channels()->where('channels.id', $channelId)->exists();
@@ -39,5 +44,10 @@ class User extends Authenticatable
     public function channels()
     {
         return $this->belongsToMany(\App\Models\Channel::class, \App\Models\UserChannel::class)->withTimestamps();
+    }
+    
+    public function receivedMessages()
+    {
+        return $this->belongsToMany(\App\Models\Message::class, \App\Models\UserMessageReceive::class)->withTimestamps();
     }
 }

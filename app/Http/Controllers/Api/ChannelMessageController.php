@@ -42,7 +42,7 @@ class ChannelMessageController extends ApiController
                 $message->saveFiles($validatedData['files']);
             }
 
-            broadcast(new ChannelMessageSent($channel, $message));
+            broadcast(new ChannelMessageSent($channel, $message))->toOthers();
 
             return $message;
         });

@@ -16,6 +16,7 @@ class MessageResource extends BaseJsonResource
                     'files' => MessageFileResource::collection($this->files),
                 ];
             }),
+            'received_members' => UserReceivedMessageResource::collection($this->receivedUsers),
             'extra_data' => $this->extra_data,
             'created_at' => $this->created_at,
         ];

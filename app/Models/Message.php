@@ -80,4 +80,14 @@ class Message extends BaseModel
     {
         return $this->belongsTo(\App\Models\User::class);
     }
+    
+    public function channel()
+    {
+        return $this->belongsTo(\App\Models\Channel::class);
+    }
+
+    public function receivedUsers()
+    {
+        return $this->belongsToMany(\App\Models\User::class, \App\Models\UserMessageReceive::class)->withTimestamps();
+    }
 }

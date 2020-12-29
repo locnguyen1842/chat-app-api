@@ -22,6 +22,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::get('/profile', 'Auth\UserController@profile');
 
+        Route::get('/users/{user}/messages/{message}/mark-as-received', 'UserMessageController@markAsReceived');
+
         Route::apiResource('channels', 'ChannelController');
 
         Route::apiResource('users.channels', 'UserChannelController')->scoped([
