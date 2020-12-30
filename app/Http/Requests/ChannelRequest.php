@@ -11,13 +11,22 @@ class ChannelRequest extends BaseFormRequest
      */
     public function rules()
     {
+        if ($this->getMethod() != 'POST') {
+            return [
+                'name' => 'required|max:255',
+                'is_public' => 'boolean|nullable',
+                'is_active' => 'boolean|nullable',
+                'extra_data' => 'array|nullable',
+            ];
+        }
+
         return [
             'name' => 'required|max:255',
             'is_public' => 'boolean|nullable',
             'is_active' => 'boolean|nullable',
             'extra_data' => 'array|nullable',
-            'member_ids' => 'array|nullable',
-            'member_ids.*' => 'required|exists:\App\Models\User,id',
+            'user_ids' => 'array|required',
+            'user_ids.*' => 'required|exists:\App\Models\User,id',
         ];
     }
 

@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\Http\DTOs\ChannelResource;
 use App\Http\DTOs\UserResource;
+use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -16,9 +17,9 @@ class UserJoinedChannel implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var \App\Models\User
+     * @var array
      */
-    public $user;
+    public $userIds;
 
     /**
      * @var \App\Models\Channel
@@ -30,9 +31,9 @@ class UserJoinedChannel implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($user, $channel)
+    public function __construct(array $userIds, $channel)
     {
-        $this->user = $user;
+        $this->userIds = $userIds;
         $this->channel = $channel;
     }
 
@@ -43,10 +44,13 @@ class UserJoinedChannel implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return [
-            new PresenceChannel("channels-{$this->channel->id}"),
-            new PrivateChannel("users-{$this->user->id}"),
-        ];
+        $userChannels = [];
+
+        foreach($this->userIds as $id) {
+            $userChannels[] = new PrivateChannel("users-$id");
+        }
+
+        return array_merge([new PresenceChannel("channels-{$this->channel->id}")], $userChannels);
     }
 
     public function broadcastAs()
@@ -58,7 +62,7 @@ class UserJoinedChannel implements ShouldBroadcast
     {
         return [
             'channel' => new ChannelResource($this->channel),
-            'user' => new UserResource($this->user),
+            'users' => UserResource::collection(User::whereIn('id', $this->userIds)->get()),
         ];
     }
 }

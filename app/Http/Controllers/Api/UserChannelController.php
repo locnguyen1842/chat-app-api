@@ -11,12 +11,16 @@ use App\Http\DTOs\SimpleCollection;
 use App\Http\Requests\UserChannelRequest;
 use App\Models\Channel;
 use App\Models\User;
+use App\Models\UserChannel;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserChannelController extends ApiController
 {
     public function index(Request $request, User $user)
     {
+        $this->authorizeForUser($user, 'index', UserChannel::class);
+
         $channels = $user->channels()->with(['members', 'lastMessage', 'lastMessage.user'])->paginate($request->size);
 
         return response(
@@ -24,36 +28,13 @@ class UserChannelController extends ApiController
         );
     }
 
-    public function store(UserChannelRequest $request, User $user)
+    public function leave(User $user, Channel $channel)
     {
-        // check if the user already exists in the channel
-        if ($user->isMemberOfChannel($request->channel_id)) {
-            throw new InvalidLogicException('The user already exists in this channel!');
-        }
+        $this->authorizeForUser($user, 'leave', $channel);
 
-        $user->channels()->syncWithoutDetaching([
-            $request->channel_id => \Arr::except($request->validated(), 'channel_id'),
-        ]);
+        $channel->members()->detach($user);
 
-        broadcast(new UserJoinedChannel($user, Channel::find($request->channel_id)));
-
-        return response()->noContent();
-    }
-
-    public function update(UserChannelRequest $request, User $user, Channel $channel)
-    {
-        $user->channels()->updateExistingPivot($channel, $request->validated());
-
-        broadcast(new ChannelUpdated($channel));
-
-        return response()->noContent();
-    }
-
-    public function destroy(User $user, Channel $channel)
-    {
-        $user->channels()->detach($channel);
-
-        broadcast(new UserLeftChannel($user, $channel));
+        broadcast(new UserLeftChannel(\Arr::wrap($user->id), $channel));
 
         return response()->noContent();
     }

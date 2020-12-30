@@ -10,6 +10,8 @@ class UserMessageController extends ApiController
 {
     public function markAsReceived(User $user, Message $message)
     {
+        $this->authorizeForUser($user, 'markAsReceived', $message);
+
         if($user->isReceivedMessage($message->id)) {
             return response()->noContent();
         }

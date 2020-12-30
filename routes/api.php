@@ -24,12 +24,20 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::get('/users/{user}/messages/{message}/mark-as-received', 'UserMessageController@markAsReceived');
 
+        Route::post('/channels/{channel}/invite', 'ChannelController@invite');
+
+        Route::post('/channels/{channel}/join', 'ChannelController@join');
+
+        Route::put('/channels/{channel}/kick', 'ChannelController@kick');
+
+        Route::put('/users/{user}/channels/{channel}/leave', 'UserChannelController@leave');
+
         Route::apiResource('channels', 'ChannelController');
 
         Route::apiResource('users.channels', 'UserChannelController')->scoped([
             'user' => 'id',
             'channel' => 'id',
-        ])->except(['show']);
+        ])->except(['show', 'update']);
 
         Route::apiResource('channels.messages', 'ChannelMessageController')->scoped([
             'channel' => 'id',

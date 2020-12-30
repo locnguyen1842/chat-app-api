@@ -14,6 +14,8 @@ class ChannelRemoved implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $afterCommit = true;
+    
     /** @var Channel */
     public $channel;
 

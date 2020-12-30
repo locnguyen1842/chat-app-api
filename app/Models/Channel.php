@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Traits\ModelRelationships;
+
 class Channel extends BaseModel
 {
+    use ModelRelationships;
     /**
      * The attributes that are mass assignable.
      *

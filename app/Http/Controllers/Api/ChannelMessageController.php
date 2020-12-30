@@ -12,12 +12,13 @@ use App\Models\Channel;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Validation\UnauthorizedException;
 
 class ChannelMessageController extends ApiController
 {
     public function index(Request $request, Channel $channel)
     {
+        $this->authorize('index', [Message::class, $channel]);
+
         $messages = $channel->messages()->with(['user', 'files'])->orderBy('created_at', 'desc')->paginate($request->size);
 
         return response(
@@ -27,11 +28,9 @@ class ChannelMessageController extends ApiController
 
     public function store(ChannelMessageRequest $request, Channel $channel)
     {
-        $user = User::find($request->user_id);
+        $user = User::findOrFail($request->user_id);
 
-        if (! $user->isMemberOfChannel($channel->id)) {
-            throw new UnauthorizedException('You are not member of this channel!');
-        }
+        $this->authorizeForUser($user, 'sendMessage', $channel);
 
         $message = \DB::transaction(function () use ($request, $channel) {
             $validatedData = $request->validated();
@@ -52,12 +51,17 @@ class ChannelMessageController extends ApiController
 
     public function show(Channel $channel, Message $message)
     {
+        $this->authorize('view', $message);
+
         return response(new MessageResource($message));
     }
 
     public function destroy(Channel $channel, Message $message)
     {
+        $this->authorize('delete', $message);
+
         $message->is_removed = true;
+
         $message->save();
 
         broadcast(new ChannelMessageRemoved($channel, $message));

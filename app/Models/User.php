@@ -31,6 +31,16 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function isAdmin()
+    {
+        return $this->id === 1;
+    }
+
+    public function isRequestor()
+    {
+        return $this->id === user()->id;
+    }
+
     public function isReceivedMessage($messageId)
     {
         return $this->receivedMessages()->where('messages.id', $messageId)->exists();
