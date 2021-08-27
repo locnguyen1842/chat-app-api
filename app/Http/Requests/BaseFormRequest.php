@@ -18,6 +18,13 @@ abstract class BaseFormRequest extends FormRequest
         $this->merge($defaults);
     }
 
+
+    /**
+     * Set the default value for request field if this is null
+     * This function will execute before validation so make sure your default value is match with the rule validation.
+     *
+     * @return array
+     */
     protected function defaults(): array
     {
         return [];

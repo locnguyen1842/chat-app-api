@@ -26,7 +26,6 @@ class UserChannelController extends ApiController
 
     public function store(UserChannelRequest $request, User $user)
     {
-        // check if the user already exists in the channel
         if ($user->isMemberOfChannel($request->channel_id)) {
             throw new InvalidLogicException('The user already exists in this channel!');
         }

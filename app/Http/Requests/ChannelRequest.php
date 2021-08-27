@@ -4,11 +4,6 @@ namespace App\Http\Requests;
 
 class ChannelRequest extends BaseFormRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
@@ -21,12 +16,6 @@ class ChannelRequest extends BaseFormRequest
         ];
     }
 
-    /**
-     * Set the default value for request field if this is null
-     * This function will execute before validation so make sure your default value is match with the rule validation.
-     *
-     * @return array
-     */
     public function defaults(): array
     {
         if ($this->getMethod() != 'POST') {

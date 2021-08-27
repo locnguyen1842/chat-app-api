@@ -24,6 +24,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::apiResource('channels', 'ChannelController');
 
+        Route::apiResource('conversations', 'ConversationController');
+
         Route::apiResource('users.channels', 'UserChannelController')->scoped([
             'user' => 'id',
             'channel' => 'id',

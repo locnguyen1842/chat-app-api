@@ -28,11 +28,7 @@ class CreateUser extends BaseJob
     {
         $this->prepareRequest();
 
-        \DB::transaction(function () {
-            $this->user = User::create($this->request);
-        });
-
-        return $this->user;
+        return $this->user = User::create($this->request);
     }
 
     private function prepareRequest()
