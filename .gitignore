@@ -25,3 +25,4 @@ Homestead.json
 
 coverage
 .php_cs.cache
+_ide_helper.php
